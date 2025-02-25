@@ -1,0 +1,35 @@
+name: Workflow for CD on Vercel with GitHub Actions
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+jobs:
+  deploy:
+    name: Deploy after a release or manual trigger to Vercel
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        run: npm install -g pnpm
+
+      - name: Install Vercel CLI
+        run: pnpm install -g vercel@latest
+
+      - name: Pull Vercel environment information
+        run: vercel pull --yes --environment=production --token=${{ env.VERCEL_TOKEN }}
+
+      - name: Build project artifacts
+        run: vercel build --prod --token=${{ env.VERCEL_TOKEN }}
+
+      - name: Deploy project artifacts to Vercel
+        run: vercel --prod --token=${{ env.VERCEL_TOKEN }}

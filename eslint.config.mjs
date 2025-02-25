@@ -11,6 +11,15 @@ export default [
   ...tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
   {
-    ignores: [".next/*", "node_modules/*", "public/*", "__test__/*", "cypress/*", "dist/*"],
+    ignores: [
+      ".next/*",
+      "node_modules/*",
+      "public/*",
+      "__test__/*",
+      "cypress/*",
+      "dist/*",
+      "build/*",
+      ".github/*",
+    ],
   },
 ];
